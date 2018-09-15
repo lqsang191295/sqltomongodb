@@ -1,0 +1,12 @@
+{  
+   "user":"sa",
+   "password":"@bc123",
+   "server":"172.16.0.126\\sql2005",
+   "database":"hrp_test_001",
+   "port":1433,
+   "options":{  
+      "instanceName":"sql2005"
+   },
+   "stream":false,
+   "parseJSON":false
+}
