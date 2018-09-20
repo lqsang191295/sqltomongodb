@@ -1,8 +1,8 @@
 {  
    "user":"sa",
-   "password":"@bc123",
-   "server":"172.16.0.126\\sql2005",
-   "database":"hrp_test_001",
+   "password":"123",
+   "server":"LQSANG\\SQL2016",
+   "database":"test",
    "port":1433,
    "options":{  
       "instanceName":"sql2005"

@@ -20,19 +20,35 @@ var cnn = (dbConfig, database, callback) => {
 	})
 }
 
-var checkExitsData = (primary_key, value, callback) => {
 
+
+var checkExitsData = (db, arrQuery, dataObj, callback) => {
+
+	dataObj.forEach((val) => {
+		var where={};
+		where[arrQuery["tb_primary_key"]]=val[arrQuery["tb_primary_key"]];
+		db.collection(arrQuery["tb_name"]).findOne(where, (err, result) => {
+			if(err){
+				return;
+			}
+			if(!result){
+				callback(db, arrQuery, val);
+			}
+		})
+	})
 }
 
-var insertOneData = (dbConfig, database, collection, dataObj, callback) => {
+var insertOneData = (dbConfig, database, arrQuery, dataObj, callback) => {
 	cnn(dbConfig, database, (err, db) => {
-
-		db.collection("TableName").insert(dataObj, function(err, res) {
-		    if (err) { 
-				console.log(err);
-				return;		    	
-		    }
-	    });
+		if(err) return;
+		checkExitsData(db, arrQuery, dataObj, (db, arrQuery, dataObj) => {
+			db.collection(arrQuery["tb_name"]).insert(dataObj, function(err, res) {
+			    if (err) { 
+					console.log(err);
+					return;		    	
+			    }
+		    });
+		});
 	})
 }
 

@@ -36,13 +36,21 @@ var getConectionSql = (dbConfig, callback) => {
 
 var execSQL = (conn, reqCon, arrQuery, callback) => {
     conn.connect(function (err) {
-        if(err) return;
+        if(err) {
+            return;
+        };
+
+        function run(qr, callback){
+            reqCon.query(qr["tb_query"], (err, recordset) => {
+                if(callback) {
+                    callback(recordset.recordset, qr);
+                }
+            });
+        }
+
         for(var i = 0; i < arrQuery.length; i++){
-        	reqCon.query(arrQuery[i], (err, recordset) => {
-        		if(callback) {
-        			callback(err, recordset.recordset, arrQuery[i]['tb_primary_key']);
-        		}
-        	})
+            var qr = arrQuery[i];
+            new run(qr, callback);
         }      
     })
 }

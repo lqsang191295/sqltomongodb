@@ -9,18 +9,26 @@ var reqConn = dataSQL.reqCon;
 /* Async Data from SQL to Mongodb */
 var arrQuery = [
 	{
-		tb_query: "SELECT * FROM TableName",
-		tb_primary_key: "Value"
+		tb_query: "SELECT * FROM test_001",
+		tb_primary_key: "a",
+		tb_name: "test_001"
+	} , {
+		tb_query: "SELECT * FROM test_002",
+		tb_primary_key: "a_002",
+		tb_name: "test_002"
 	}
 ];
 // 
-var calbackAfterGetData = (err, result, tb_primary_key) => {
+var calbackAfterGetData = (result, arrQuery) => {
+	console.log(arrQuery);
 	/*Lấy connection của Mongodb*/
 	var dataConfigMongo = mongo_controllers.getStringMongo();
 	//
+	console.log(23333);
 	mongo_controllers.insertOneData(dataConfigMongo.connection, dataConfigMongo.database, 
-		null, result);
+		arrQuery, result);
 }
+//
 sql_controllers.execSQL(conn, reqConn, arrQuery, calbackAfterGetData)
 
 
