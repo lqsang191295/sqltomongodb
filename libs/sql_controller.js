@@ -2,6 +2,7 @@ const sql = require('mssql');
 const fs = require('fs');
 const str_sql = "";
 var conSQL, reqCon;
+const logs = require('./logs');
 
 var getStringSQL = (callback) => {
 	try {

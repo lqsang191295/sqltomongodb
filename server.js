@@ -9,22 +9,37 @@ var reqConn = dataSQL.reqCon;
 /* Async Data from SQL to Mongodb */
 var arrQuery = [
 	{
-		tb_query: "SELECT * FROM test_001",
-		tb_primary_key: "a",
-		tb_name: "test_001"
-	} , {
-		tb_query: "SELECT * FROM test_002",
-		tb_primary_key: "a_002",
-		tb_name: "test_002"
+		tb_query: `
+			SELECT A.Application, A.FunctionID, A.FunctionType, A.ParentID, A.Width, 
+				A.Level, A.LevelCode, A.DefaultName, B.CustomName
+			FROM HCSSYS_FunctionList AS A 
+			INNER JOIN HCSSYS_FunctionListLabel AS B 
+			ON A.Application = B.Application AND A.FunctionID = B.FunctionID
+			WHERE A.Application = 'LMS'
+		`,
+		tb_primary_key: [
+			{"Application": "app"}, 
+			{"FunctionID": "function_id"}
+		],
+		tb_name: "lv.SYS_FunctionList",
+		tb_map_filed: [
+			{"Application": "app"},
+			{"FunctionID": "function_id"},
+			{"FunctionType": "type"},
+			{"ParentID": "parent_id"},
+			{"Width": "width"},
+			{"Level": "level"},
+			{"LevelCode": "level_code", "type": "array"},
+			{"DefaultName": "default_name"},
+			{"CustomName": "custom_name"},
+		]
 	}
 ];
 // 
 var calbackAfterGetData = (result, arrQuery) => {
-	console.log(arrQuery);
 	/*Lấy connection của Mongodb*/
 	var dataConfigMongo = mongo_controllers.getStringMongo();
 	//
-	console.log(23333);
 	mongo_controllers.insertOneData(dataConfigMongo.connection, dataConfigMongo.database, 
 		arrQuery, result);
 }
